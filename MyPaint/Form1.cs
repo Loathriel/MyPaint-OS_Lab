@@ -63,6 +63,7 @@ namespace MyPaint_OS_8_
         {
             if (!int.TryParse(LineWidth.Text, out var lineWidth))
                 lineWidth = 1;
+            lineWidth = Math.Max(1, lineWidth);
             var pen = new Pen(LineColor.BackColor, lineWidth);
             var brush = new SolidBrush(FillColor.BackColor);
             return index switch

@@ -334,9 +334,14 @@
             this.GraphicsPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GraphicsPanel_MouseMove);
             this.GraphicsPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GraphicsPanel_MouseUp);
             // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "Images|*.bmp;*.png;*jpg;*.jpeg;*.tff;*.tiff";
+            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Images|*.bmp;*.png;*jpg;*.jpeg;*.tff;*.tiff";
             // 
             // toolStrip1
             // 

@@ -11,6 +11,8 @@ namespace MyPaint_OS_8_
         string filename = string.Empty;
         bool changed = false;
         int defaultWidth, defaultHeight;
+        Button SelectedTool;
+        Color def, selected;
         private static void NotImplemented()
         {
             MessageBox.Show("Not yet implemented", "Error!");
@@ -22,8 +24,9 @@ namespace MyPaint_OS_8_
             defaultHeight = GraphicsPanel.Height;
             GraphicsPanel.Image = new Bitmap(defaultWidth, defaultHeight);
             graphics = GraphicsPanel.CreateGraphics();
-            toolStripComboBox1.SelectedIndex = 0;
-            toolStripComboBox1.SelectedText = "Line";
+            SelectedTool = LineButton;
+            def = RectangleButton.BackColor;
+            selected = LineButton.BackColor;
         }
 
         private void SaveToFile()
@@ -59,24 +62,23 @@ namespace MyPaint_OS_8_
 
         }
 
-        private Shape createShape(string index, Point p)
+        private Shape createShape(Point p)
         {
-            if (!int.TryParse(LineWidth.Text, out var lineWidth))
-                lineWidth = 1;
-            lineWidth = Math.Max(1, lineWidth);
+            var lineWidth = (int)LineWidth.Value;
             var pen = new Pen(LineColor.BackColor, lineWidth);
             var brush = new SolidBrush(FillColor.BackColor);
-            return index switch
-            {
-                "Line" => new Line
-                    (p, pen),
-                "Rectangle" => new Instruments.Shapes.Rectangle
-                    (p, pen, brush, true, true),
-                "Ellipse" => new Elipse
-                    (p, pen, brush, true, true),
-                _ => new Line
-                    (p, pen)
-            };
+
+            if (SelectedTool == LineButton)
+                return new Line(p, pen);
+            if (SelectedTool == RectangleButton)
+                return new Instruments.Shapes.Rectangle
+                    (p, pen, brush, true, true);
+            if (SelectedTool == EllipseButton)
+                return new Elipse(p, pen, brush, true, true);
+            if (SelectedTool == LassoButton)
+                return new Line(p, pen);
+
+            return new Line(p, pen);
         }
 
         private bool CallSaveDialog()
@@ -120,10 +122,21 @@ namespace MyPaint_OS_8_
         {
             changed = true;
             shapes.Add(shape);
-            Refresh();
+            GraphicsPanel.Refresh();
             undoBuffer.Clear();
             shape = null;
         }
+
+        private void ActivateButton(Button b)
+        {
+            if (b == SelectedTool)
+                return;
+
+            SelectedTool.BackColor = def;
+            b.BackColor = selected;
+            SelectedTool = b;
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);

@@ -25,14 +25,16 @@ namespace MyPaint_OS_8_
         private void GraphicsPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (shape is null || shape.IsCompleted)
-                shape = createShape(toolStripComboBox1.SelectedText, e.Location);
+                shape = createShape(e.Location);
         }
 
         private void GraphicsPanel_MouseMove(object sender, MouseEventArgs e)
         {
+            PositionLabel.Text = $"{e.Location.X}; {e.Location.Y}";
+
             if (shape != null && !shape.IsCompleted)
             {
-                Refresh();
+                GraphicsPanel.Refresh();
                 shape.MouseMove(e, graphics);
             }
         }
@@ -91,7 +93,7 @@ namespace MyPaint_OS_8_
             var tempShape = shapes[^1];
             shapes.RemoveAt(shapes.Count - 1);
             undoBuffer.Add(tempShape);
-            Refresh();
+            GraphicsPanel.Refresh();
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -102,7 +104,7 @@ namespace MyPaint_OS_8_
             var tempShape = undoBuffer[^1];
             undoBuffer.RemoveAt(undoBuffer.Count - 1);
             shapes.Add(tempShape);
-            Refresh();
+            GraphicsPanel.Refresh();
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -149,6 +151,35 @@ namespace MyPaint_OS_8_
             if (colorDialog1.ShowDialog() != DialogResult.OK)
                 return;
             FillColor.BackColor = colorDialog1.Color;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                shape = null;
+                GraphicsPanel.Refresh();
+            }
+        }
+
+        private void LineButton_Click(object sender, EventArgs e)
+        {
+            ActivateButton((Button)sender);
+        }
+
+        private void RectangleButton_Click(object sender, EventArgs e)
+        {
+            ActivateButton((Button)sender);
+        }
+
+        private void EllipseButton_Click(object sender, EventArgs e)
+        {
+            ActivateButton((Button)sender);
+        }
+
+        private void LassoButton_Click(object sender, EventArgs e)
+        {
+            ActivateButton((Button)sender);
         }
     }
 }

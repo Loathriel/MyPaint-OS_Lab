@@ -62,17 +62,24 @@
             this.GraphicsPanel = new System.Windows.Forms.PictureBox();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.LineColor = new System.Windows.Forms.ToolStripButton();
-            this.FillColor = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.LineWidth = new System.Windows.Forms.ToolStripTextBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PositionLabel = new System.Windows.Forms.Label();
+            this.LineWidth = new System.Windows.Forms.NumericUpDown();
+            this.FillColor = new System.Windows.Forms.Button();
+            this.LineColor = new System.Windows.Forms.Button();
+            this.LassoButton = new System.Windows.Forms.Button();
+            this.EllipseButton = new System.Windows.Forms.Button();
+            this.RectangleButton = new System.Windows.Forms.Button();
+            this.LineButton = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicsPanel)).BeginInit();
-            this.toolStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -108,7 +115,7 @@
             this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -321,7 +328,7 @@
             // GraphicsPanel
             // 
             this.GraphicsPanel.BackColor = System.Drawing.SystemColors.Window;
-            this.GraphicsPanel.Location = new System.Drawing.Point(81, 24);
+            this.GraphicsPanel.Location = new System.Drawing.Point(67, 27);
             this.GraphicsPanel.Name = "GraphicsPanel";
             this.GraphicsPanel.Size = new System.Drawing.Size(641, 384);
             this.GraphicsPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -343,72 +350,169 @@
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Images|*.bmp;*.png;*jpg;*.jpeg;*.tff;*.tiff";
             // 
-            // toolStrip1
+            // panel1
             // 
-            this.toolStrip1.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBox1,
-            this.toolStripSeparator6,
-            this.LineColor,
-            this.FillColor,
-            this.toolStripSeparator7,
-            this.LineWidth});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.toolStrip1.Size = new System.Drawing.Size(78, 426);
-            this.toolStrip1.TabIndex = 3;
-            this.toolStrip1.Text = "toolStrip1";
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.PositionLabel);
+            this.panel1.Controls.Add(this.LineWidth);
+            this.panel1.Controls.Add(this.FillColor);
+            this.panel1.Controls.Add(this.LineColor);
+            this.panel1.Controls.Add(this.LassoButton);
+            this.panel1.Controls.Add(this.EllipseButton);
+            this.panel1.Controls.Add(this.RectangleButton);
+            this.panel1.Controls.Add(this.LineButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(65, 426);
+            this.panel1.TabIndex = 1;
             // 
-            // toolStripComboBox1
+            // label2
             // 
-            this.toolStripComboBox1.Items.AddRange(new object[] {
-            "Line",
-            "Rectangle",
-            "Ellipse"});
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(73, 23);
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(5, 110);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(49, 38);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Line\r\nWidth";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // toolStripSeparator6
+            // label1
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(75, 6);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(10, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 19);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Tools";
             // 
-            // LineColor
+            // PositionLabel
             // 
-            this.LineColor.AutoSize = false;
-            this.LineColor.BackColor = System.Drawing.Color.Black;
-            this.LineColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
-            this.LineColor.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.LineColor.Name = "LineColor";
-            this.LineColor.Size = new System.Drawing.Size(20, 20);
-            this.LineColor.Text = "Line Color";
-            this.LineColor.Click += new System.EventHandler(this.LineColor_Click);
-            // 
-            // FillColor
-            // 
-            this.FillColor.AutoSize = false;
-            this.FillColor.BackColor = System.Drawing.Color.White;
-            this.FillColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.None;
-            this.FillColor.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.FillColor.Name = "FillColor";
-            this.FillColor.Size = new System.Drawing.Size(20, 20);
-            this.FillColor.Text = "Fill Color";
-            this.FillColor.Click += new System.EventHandler(this.FillColor_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(75, 6);
+            this.PositionLabel.AutoSize = true;
+            this.PositionLabel.Location = new System.Drawing.Point(3, 391);
+            this.PositionLabel.Name = "PositionLabel";
+            this.PositionLabel.Size = new System.Drawing.Size(25, 15);
+            this.PositionLabel.TabIndex = 7;
+            this.PositionLabel.Text = "0; 0";
             // 
             // LineWidth
             // 
-            this.LineWidth.AutoSize = false;
+            this.LineWidth.Location = new System.Drawing.Point(3, 151);
+            this.LineWidth.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.LineWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.LineWidth.Name = "LineWidth";
-            this.LineWidth.Size = new System.Drawing.Size(40, 23);
-            this.LineWidth.Text = "1";
-            this.LineWidth.ToolTipText = "Width of lines";
+            this.LineWidth.Size = new System.Drawing.Size(55, 23);
+            this.LineWidth.TabIndex = 6;
+            this.LineWidth.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // FillColor
+            // 
+            this.FillColor.BackColor = System.Drawing.Color.White;
+            this.FillColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.FillColor.Location = new System.Drawing.Point(34, 263);
+            this.FillColor.Name = "FillColor";
+            this.FillColor.Size = new System.Drawing.Size(25, 25);
+            this.FillColor.TabIndex = 5;
+            this.FillColor.UseVisualStyleBackColor = false;
+            this.FillColor.Click += new System.EventHandler(this.FillColor_Click);
+            // 
+            // LineColor
+            // 
+            this.LineColor.BackColor = System.Drawing.Color.Black;
+            this.LineColor.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LineColor.Location = new System.Drawing.Point(3, 263);
+            this.LineColor.Name = "LineColor";
+            this.LineColor.Size = new System.Drawing.Size(25, 25);
+            this.LineColor.TabIndex = 4;
+            this.LineColor.UseVisualStyleBackColor = false;
+            this.LineColor.Click += new System.EventHandler(this.LineColor_Click);
+            // 
+            // LassoButton
+            // 
+            this.LassoButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.LassoButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LassoButton.Image = global::MyPaint_OS_8_.Properties.Resources.icons8_lasso_tool_80;
+            this.LassoButton.Location = new System.Drawing.Point(34, 62);
+            this.LassoButton.Name = "LassoButton";
+            this.LassoButton.Size = new System.Drawing.Size(25, 25);
+            this.LassoButton.TabIndex = 3;
+            this.LassoButton.UseVisualStyleBackColor = false;
+            this.LassoButton.Click += new System.EventHandler(this.LassoButton_Click);
+            // 
+            // EllipseButton
+            // 
+            this.EllipseButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.EllipseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.EllipseButton.Image = global::MyPaint_OS_8_.Properties.Resources.icons8_oval_50;
+            this.EllipseButton.Location = new System.Drawing.Point(3, 62);
+            this.EllipseButton.Name = "EllipseButton";
+            this.EllipseButton.Size = new System.Drawing.Size(25, 25);
+            this.EllipseButton.TabIndex = 2;
+            this.EllipseButton.UseVisualStyleBackColor = false;
+            this.EllipseButton.Click += new System.EventHandler(this.EllipseButton_Click);
+            // 
+            // RectangleButton
+            // 
+            this.RectangleButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.RectangleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("RectangleButton.Image")));
+            this.RectangleButton.Location = new System.Drawing.Point(34, 31);
+            this.RectangleButton.Name = "RectangleButton";
+            this.RectangleButton.Size = new System.Drawing.Size(25, 25);
+            this.RectangleButton.TabIndex = 1;
+            this.RectangleButton.UseVisualStyleBackColor = false;
+            this.RectangleButton.Click += new System.EventHandler(this.RectangleButton_Click);
+            // 
+            // LineButton
+            // 
+            this.LineButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.LineButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.LineButton.Image = global::MyPaint_OS_8_.Properties.Resources.icons8_line_501;
+            this.LineButton.Location = new System.Drawing.Point(3, 31);
+            this.LineButton.Name = "LineButton";
+            this.LineButton.Size = new System.Drawing.Size(25, 25);
+            this.LineButton.TabIndex = 0;
+            this.LineButton.UseVisualStyleBackColor = false;
+            this.LineButton.Click += new System.EventHandler(this.LineButton_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label3.Location = new System.Drawing.Point(1, 363);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(57, 19);
+            this.label3.TabIndex = 10;
+            this.label3.Text = "Position";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label4.Location = new System.Drawing.Point(10, 230);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 19);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Colors";
             // 
             // Form1
             // 
@@ -417,17 +521,19 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.GraphicsPanel);
-            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Waldemar\'s Paint";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GraphicsPanel)).EndInit();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LineWidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -468,13 +574,19 @@
         private ToolStripMenuItem pasteFromFileToolStripMenuItem;
         private SaveFileDialog saveFileDialog1;
         private OpenFileDialog openFileDialog1;
-        private ToolStrip toolStrip1;
-        private ToolStripComboBox toolStripComboBox1;
-        private ToolStripButton LineColor;
-        private ToolStripButton FillColor;
         private ColorDialog colorDialog1;
-        private ToolStripSeparator toolStripSeparator6;
-        private ToolStripSeparator toolStripSeparator7;
-        private ToolStripTextBox LineWidth;
+        private Panel panel1;
+        private Button LassoButton;
+        private Button EllipseButton;
+        private Button RectangleButton;
+        private Button LineButton;
+        private Button FillColor;
+        private Button LineColor;
+        private NumericUpDown LineWidth;
+        private Label PositionLabel;
+        private Label label2;
+        private Label label1;
+        private Label label4;
+        private Label label3;
     }
 }

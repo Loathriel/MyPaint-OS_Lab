@@ -4,15 +4,17 @@ namespace MyPaint_OS_8_
 {
     public partial class Form1 : Form
     {
-        private Shape? shape = null;
-        Graphics graphics;
+        private Shape? 
+            shape = null,
+            copyBuffer = null;
         List<Shape> shapes = new List<Shape>();
         List<Shape> undoBuffer = new List<Shape>();
         string filename = string.Empty;
         bool changed = false;
-        int defaultWidth, defaultHeight;
         Button SelectedTool;
-        Color def, selected;
+
+        private readonly int defaultWidth, defaultHeight;
+        private readonly Color def, selected;
         private static void NotImplemented()
         {
             MessageBox.Show("Not yet implemented", "Error!");
@@ -20,10 +22,9 @@ namespace MyPaint_OS_8_
         public Form1()
         {
             InitializeComponent();
-            defaultWidth = GraphicsPanel.Width;
-            defaultHeight = GraphicsPanel.Height;
-            GraphicsPanel.Image = new Bitmap(defaultWidth, defaultHeight);
-            graphics = GraphicsPanel.CreateGraphics();
+            defaultWidth = pictureBox.Width;
+            defaultHeight = pictureBox.Height;
+            pictureBox.Image = new Bitmap(defaultWidth, defaultHeight);
             SelectedTool = LineButton;
             def = RectangleButton.BackColor;
             selected = LineButton.BackColor;
@@ -31,35 +32,30 @@ namespace MyPaint_OS_8_
 
         private void SaveToFile()
         {
-            Image bmp = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height);
-            Graphics g = Graphics.FromImage(bmp);
+            using Image bmp = pictureBox.Image == null?
+                new Bitmap(pictureBox.Width, pictureBox.Height):
+                new Bitmap(pictureBox.Image);
+
+            using Graphics g = Graphics.FromImage(bmp);
+
             foreach (Shape shape in shapes)
                 shape.Paint(g);
+
             bmp.Save(filename);
             changed = false;
-            bmp.Dispose();
         }
 
         private void ResetPanel(Image? Image = null)
         {
             shapes.Clear();
-            graphics.Clear(Color.Transparent);
+            pictureBox.Image?.Dispose();
 
-            if (Image == null)
-            {
-                GraphicsPanel.Width = defaultWidth;
-                GraphicsPanel.Height = defaultHeight;
-            }
-            else
-            {
-                GraphicsPanel.Width = Image.Width;
-                GraphicsPanel.Height = Image.Height;
-                shape = new Img(new Point(0, 0), Image);
-                AddShape();
-                Image.Dispose();
-            }
-            GraphicsPanel.Image = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height);
+            pictureBox.Image = Image == null? 
+                new Bitmap(defaultWidth, defaultHeight) 
+                : new Bitmap(Image);
 
+            Image?.Dispose();
+            pictureBox.Refresh();
         }
 
         private Shape createShape(Point p)
@@ -85,6 +81,7 @@ namespace MyPaint_OS_8_
         {
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
                 return false;
+
             filename = saveFileDialog1.FileName;
             SaveToFile();
             return true;
@@ -92,39 +89,36 @@ namespace MyPaint_OS_8_
 
         private bool CanResetGraphics()
         {
-            if (changed)
+            if (!changed)
+                return true;
+
+            var result = MessageBox.Show(
+                "There are unsaved changed. Do you want to save them?",
+                "Warning",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Cancel)
+                return false;
+
+            if (result == DialogResult.No)
             {
-                var result = MessageBox.Show(
-                    "There are unsaved changed. Do you want to save them?",
-                    "Warning",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Cancel)
-                    return false;
-
-                if (result == DialogResult.No)
-                {
-                    changed = false;
-                    return true;
-                }
-
-                if (filename != string.Empty)
-                    SaveToFile();
-
-                else if (filename == string.Empty)
-                    return CallSaveDialog();
+                changed = false;
+                return true;
             }
-            return true;
+
+            if (filename != string.Empty)
+                SaveToFile();
+
+            return CallSaveDialog();
         }
 
         private void AddShape()
         {
             changed = true;
             shapes.Add(shape);
-            GraphicsPanel.Refresh();
+            pictureBox.Refresh();
             undoBuffer.Clear();
-            shape = null;
         }
 
         private void ActivateButton(Button b)

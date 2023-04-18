@@ -34,13 +34,15 @@ namespace MyPaint_OS_8_
 
             if (shape != null && !shape.IsCompleted)
             {
-                GraphicsPanel.Refresh();
+                pictureBox.Refresh();
+                using var graphics = pictureBox.CreateGraphics();
                 shape.MouseMove(e, graphics);
             }
         }
 
         private void GraphicsPanel_MouseUp(object sender, MouseEventArgs e)
         {
+            using var graphics = pictureBox.CreateGraphics();
             shape?.MouseUp(e, graphics);
             if (shape != null && shape.IsCompleted)
                 AddShape();
@@ -93,7 +95,7 @@ namespace MyPaint_OS_8_
             var tempShape = shapes[^1];
             shapes.RemoveAt(shapes.Count - 1);
             undoBuffer.Add(tempShape);
-            GraphicsPanel.Refresh();
+            pictureBox.Refresh();
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,7 +106,7 @@ namespace MyPaint_OS_8_
             var tempShape = undoBuffer[^1];
             undoBuffer.RemoveAt(undoBuffer.Count - 1);
             shapes.Add(tempShape);
-            GraphicsPanel.Refresh();
+            pictureBox.Refresh();
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -158,7 +160,8 @@ namespace MyPaint_OS_8_
             if (e.KeyCode == Keys.Escape)
             {
                 shape = null;
-                GraphicsPanel.Refresh();
+                pictureBox.Refresh();
+                return;
             }
         }
 

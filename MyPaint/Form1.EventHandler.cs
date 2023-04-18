@@ -4,7 +4,7 @@ namespace MyPaint_OS_8_
 {
     partial class Form1
     {
-        private void GraphicsPanel_Paint(object sender, PaintEventArgs e)
+        private void Graphics_Paint(object sender, PaintEventArgs e)
         {
             foreach (Shape shape in shapes)
             {
@@ -12,23 +12,23 @@ namespace MyPaint_OS_8_
             }
         }
 
-        private void GraphicsPanel_MouseClick(object sender, MouseEventArgs e)
+        private void Graphics_MouseClick(object sender, MouseEventArgs e)
         {
 
         }
 
-        private void GraphicsPanel_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void Graphics_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
         }
 
-        private void GraphicsPanel_MouseDown(object sender, MouseEventArgs e)
+        private void Graphics_MouseDown(object sender, MouseEventArgs e)
         {
             if (shape is null || shape.IsCompleted)
                 shape = createShape(e.Location);
         }
 
-        private void GraphicsPanel_MouseMove(object sender, MouseEventArgs e)
+        private void Graphics_MouseMove(object sender, MouseEventArgs e)
         {
             PositionLabel.Text = $"{e.Location.X}; {e.Location.Y}";
 
@@ -40,7 +40,7 @@ namespace MyPaint_OS_8_
             }
         }
 
-        private void GraphicsPanel_MouseUp(object sender, MouseEventArgs e)
+        private void Graphics_MouseUp(object sender, MouseEventArgs e)
         {
             using var graphics = pictureBox.CreateGraphics();
             shape?.MouseUp(e, graphics);

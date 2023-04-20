@@ -6,10 +6,8 @@ namespace MyPaint_OS_8_
     {
         private void Graphics_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Shape shape in shapes)
-            {
+            if (shape is Selection)
                 shape.Paint(e.Graphics);
-            }
         }
 
         private void Graphics_MouseClick(object sender, MouseEventArgs e)
@@ -24,13 +22,24 @@ namespace MyPaint_OS_8_
 
         private void Graphics_MouseDown(object sender, MouseEventArgs e)
         {
-            if (shape is null || shape.IsCompleted)
+            if (shape is Selection)
+            {
+                using var graphics = pictureBox.CreateGraphics();
+                shape.MouseDown(e, graphics);
+            }
+
+            else if (shape is null || shape.IsCompleted)
                 shape = createShape(e.Location);
         }
 
         private void Graphics_MouseMove(object sender, MouseEventArgs e)
         {
-            PositionLabel.Text = $"{e.Location.X}; {e.Location.Y}";
+            PositionLabel.Text = $"{e.X}; {e.Y}";
+
+            if (shape is Selection && shape.IsCompleted)
+            {
+
+            }
 
             if (shape != null && !shape.IsCompleted)
             {
@@ -42,8 +51,17 @@ namespace MyPaint_OS_8_
 
         private void Graphics_MouseUp(object sender, MouseEventArgs e)
         {
-            using var graphics = pictureBox.CreateGraphics();
+            Graphics graphics;
+            if (shape is Selection selection)
+            {
+                graphics = pictureBox.CreateGraphics();
+                if (!selection.IsSelected)
+                    selection.SetImage((Bitmap)pictureBox.Image);
+            }
+            else
+                graphics = Graphics.FromImage(pictureBox.Image);
             shape?.MouseUp(e, graphics);
+            graphics.Dispose();
             if (shape != null && shape.IsCompleted)
                 AddShape();
         }
@@ -66,7 +84,10 @@ namespace MyPaint_OS_8_
                 return;
 
             filename = openFileDialog1.FileName;
-            ResetPanel(new Bitmap(filename));
+            using var pic = new Bitmap(filename);
+            original = new Bitmap(pic);
+            pictureBox.Image = new Bitmap(original);
+            ResetPanel(false);
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -95,7 +116,8 @@ namespace MyPaint_OS_8_
             var tempShape = shapes[^1];
             shapes.RemoveAt(shapes.Count - 1);
             undoBuffer.Add(tempShape);
-            pictureBox.Refresh();
+            MyPaint();
+            changeEnabledState();
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -106,7 +128,8 @@ namespace MyPaint_OS_8_
             var tempShape = undoBuffer[^1];
             undoBuffer.RemoveAt(undoBuffer.Count - 1);
             shapes.Add(tempShape);
-            pictureBox.Refresh();
+            MyPaint();
+            changeEnabledState();
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -116,7 +139,8 @@ namespace MyPaint_OS_8_
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotImplemented();
+            if (shape is Selection)
+                copyBuffer = shape;
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)

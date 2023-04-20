@@ -2,7 +2,7 @@
 {
     internal class Elipse : Shape
     {
-        public Elipse(Point start, Pen pen, Brush brush, bool DrawOutline, bool DrawSolid)
+        public Elipse(Point start, Pen pen, Brush brush, bool DrawOutline = true, bool DrawSolid = false)
         {
             this.Start = start;
             this.End = start;
@@ -15,14 +15,14 @@
         {
             base.MouseMove(args, graphics);
             End = args.Location;
-            this.Paint(graphics);
+            Paint(graphics);
         }
         public override void MouseUp(MouseEventArgs args, Graphics graphics)
         {
             base.MouseUp(args, graphics);
             End = args.Location;
             completed = true;
-            this.Paint(graphics);
+            Paint(graphics);
         }
         public override void Paint(Graphics graphics)
         {

@@ -1,4 +1,5 @@
 using MyPaint_OS_8_.Instruments.Shapes;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace MyPaint_OS_8_
 {
@@ -12,6 +13,7 @@ namespace MyPaint_OS_8_
         string filename = string.Empty;
         bool changed = false;
         Button SelectedTool;
+        Image original;
 
         private readonly int defaultWidth, defaultHeight;
         private readonly Color def, selected;
@@ -24,37 +26,34 @@ namespace MyPaint_OS_8_
             InitializeComponent();
             defaultWidth = pictureBox.Width;
             defaultHeight = pictureBox.Height;
-            pictureBox.Image = new Bitmap(defaultWidth, defaultHeight);
+            original = new Bitmap(defaultWidth, defaultHeight);
+            pictureBox.Image = new Bitmap(original);
             SelectedTool = LineButton;
             def = RectangleButton.BackColor;
             selected = LineButton.BackColor;
+            
         }
 
         private void SaveToFile()
         {
-            using Image bmp = pictureBox.Image == null?
-                new Bitmap(pictureBox.Width, pictureBox.Height):
-                new Bitmap(pictureBox.Image);
-
-            using Graphics g = Graphics.FromImage(bmp);
-
-            foreach (Shape shape in shapes)
-                shape.Paint(g);
-
+            using Image bmp = new Bitmap(pictureBox.Image);
             bmp.Save(filename);
-            changed = false;
+            ResetPanel(false);
         }
 
-        private void ResetPanel(Image? Image = null)
+        private void ResetPanel(bool clearScreen = true)
         {
             shapes.Clear();
-            pictureBox.Image?.Dispose();
+            undoBuffer.Clear();
+            shape = null;
+            changed = false;
+            changeEnabledState();
 
-            pictureBox.Image = Image == null? 
-                new Bitmap(defaultWidth, defaultHeight) 
-                : new Bitmap(Image);
-
-            Image?.Dispose();
+            if (clearScreen)
+            { 
+                pictureBox.Image?.Dispose();
+                pictureBox.Image = new Bitmap(defaultWidth, defaultHeight);
+            }
             pictureBox.Refresh();
         }
 
@@ -64,16 +63,17 @@ namespace MyPaint_OS_8_
             var pen = new Pen(LineColor.BackColor, lineWidth);
             var brush = new SolidBrush(FillColor.BackColor);
 
+            var fillShapes = !checkBox1.Checked;
+
             if (SelectedTool == LineButton)
                 return new Line(p, pen);
             if (SelectedTool == RectangleButton)
                 return new Instruments.Shapes.Rectangle
-                    (p, pen, brush, true, true);
+                    (p, pen, brush, true, fillShapes);
             if (SelectedTool == EllipseButton)
-                return new Elipse(p, pen, brush, true, true);
+                return new Elipse(p, pen, brush, true, fillShapes);
             if (SelectedTool == LassoButton)
-                return new Line(p, pen);
-
+                return new Selection(p);
             return new Line(p, pen);
         }
 
@@ -117,8 +117,11 @@ namespace MyPaint_OS_8_
         {
             changed = true;
             shapes.Add(shape);
-            pictureBox.Refresh();
             undoBuffer.Clear();
+            if (shape is Selection)
+                MyPaint();
+            shape = null;
+            changeEnabledState();
         }
 
         private void ActivateButton(Button b)
@@ -129,6 +132,22 @@ namespace MyPaint_OS_8_
             SelectedTool.BackColor = def;
             b.BackColor = selected;
             SelectedTool = b;
+        }
+        private void changeEnabledState()
+        {
+            undoToolStripMenuItem.Enabled = shapes.Count == 0? false : true;
+            redoToolStripMenuItem.Enabled = undoBuffer.Count == 0 ? false : true;
+        }
+
+        private void MyPaint()
+        {
+            var img = new Bitmap(original);
+            using var graphics = Graphics.FromImage(img);
+            foreach (var shape in shapes)
+                shape.Paint(graphics);
+            pictureBox.Image.Dispose();
+            pictureBox.Image = img;
+            pictureBox.Refresh();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)

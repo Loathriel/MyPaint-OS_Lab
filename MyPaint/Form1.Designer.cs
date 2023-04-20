@@ -65,6 +65,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -77,7 +78,6 @@
             this.EllipseButton = new System.Windows.Forms.Button();
             this.RectangleButton = new System.Windows.Forms.Button();
             this.LineButton = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.GraphicsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -391,6 +391,16 @@
             this.panel1.Size = new System.Drawing.Size(65, 426);
             this.panel1.TabIndex = 1;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(5, 294);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(55, 49);
+            this.checkBox1.TabIndex = 12;
+            this.checkBox1.Text = "Don\'t\r\nuse\r\nfill";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -513,7 +523,7 @@
             // 
             this.RectangleButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.RectangleButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.RectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("RectangleButton.Image")));
+            this.RectangleButton.Image = global::MyPaint_OS_8_.Properties.Resources.icons8_rectangle_48;
             this.RectangleButton.Location = new System.Drawing.Point(34, 31);
             this.RectangleButton.Name = "RectangleButton";
             this.RectangleButton.Size = new System.Drawing.Size(25, 25);
@@ -532,16 +542,6 @@
             this.LineButton.TabIndex = 0;
             this.LineButton.UseVisualStyleBackColor = false;
             this.LineButton.Click += new System.EventHandler(this.LineButton_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(5, 294);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(92, 19);
-            this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Don\'t\r\nuse\r\nfill";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 

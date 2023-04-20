@@ -121,5 +121,10 @@
         public Selection Copy()
             => new Selection(this);
 
+        public void ForceComplete()
+        {
+            completed = true;
+        }
+
     }
 }

@@ -145,6 +145,8 @@ namespace MyPaint_OS_8_
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (shape is Selection selection)
+                selection.ForceComplete();
             if (shape != null)
                 AddShape();
             shape = copyBuffer?.Copy();

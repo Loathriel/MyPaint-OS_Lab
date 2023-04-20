@@ -1,16 +1,21 @@
 using MyPaint_OS_8_.Instruments.Shapes;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace MyPaint_OS_8_
 {
     public partial class Form1 : Form
     {
         private Shape? shape = null;
-        Graphics graphics;
+        private Selection? copyBuffer = null;
         List<Shape> shapes = new List<Shape>();
         List<Shape> undoBuffer = new List<Shape>();
         string filename = string.Empty;
         bool changed = false;
-        int defaultWidth, defaultHeight;
+        Button SelectedTool;
+        Image original;
+
+        private readonly int defaultWidth, defaultHeight;
+        private readonly Color def, selected;
         private static void NotImplemented()
         {
             MessageBox.Show("Not yet implemented", "Error!");
@@ -18,71 +23,64 @@ namespace MyPaint_OS_8_
         public Form1()
         {
             InitializeComponent();
-            defaultWidth = GraphicsPanel.Width;
-            defaultHeight = GraphicsPanel.Height;
-            GraphicsPanel.Image = new Bitmap(defaultWidth, defaultHeight);
-            graphics = GraphicsPanel.CreateGraphics();
-            toolStripComboBox1.SelectedIndex = 0;
-            toolStripComboBox1.SelectedText = "Line";
+            defaultWidth = pictureBox.Width;
+            defaultHeight = pictureBox.Height;
+            original = new Bitmap(defaultWidth, defaultHeight);
+            pictureBox.Image = new Bitmap(original);
+            SelectedTool = LineButton;
+            def = RectangleButton.BackColor;
+            selected = LineButton.BackColor;
+            
         }
 
         private void SaveToFile()
         {
-            Image bmp = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height);
-            Graphics g = Graphics.FromImage(bmp);
-            foreach (Shape shape in shapes)
-                shape.Paint(g);
+            using Image bmp = new Bitmap(pictureBox.Image);
             bmp.Save(filename);
-            changed = false;
-            bmp.Dispose();
+            ResetPanel(false);
         }
 
-        private void ResetPanel(Image? Image = null)
+        private void ResetPanel(bool clearScreen = true)
         {
             shapes.Clear();
-            graphics.Clear(Color.Transparent);
+            undoBuffer.Clear();
+            shape = null;
+            changed = false;
+            changeEnabledState();
 
-            if (Image == null)
-            {
-                GraphicsPanel.Width = defaultWidth;
-                GraphicsPanel.Height = defaultHeight;
+            if (clearScreen)
+            { 
+                pictureBox.Image?.Dispose();
+                pictureBox.Image = new Bitmap(defaultWidth, defaultHeight);
             }
-            else
-            {
-                GraphicsPanel.Width = Image.Width;
-                GraphicsPanel.Height = Image.Height;
-                shape = new Img(new Point(0, 0), Image);
-                AddShape();
-                Image.Dispose();
-            }
-            GraphicsPanel.Image = new Bitmap(GraphicsPanel.Width, GraphicsPanel.Height);
-
+            pictureBox.Refresh();
         }
 
-        private Shape createShape(string index, Point p)
+        private Shape createShape(Point p)
         {
-            if (!int.TryParse(LineWidth.Text, out var lineWidth))
-                lineWidth = 1;
-            lineWidth = Math.Max(1, lineWidth);
+            var lineWidth = (int)LineWidth.Value;
             var pen = new Pen(LineColor.BackColor, lineWidth);
             var brush = new SolidBrush(FillColor.BackColor);
-            return index switch
-            {
-                "Line" => new Line
-                    (p, pen),
-                "Rectangle" => new Instruments.Shapes.Rectangle
-                    (p, pen, brush, true, true),
-                "Ellipse" => new Elipse
-                    (p, pen, brush, true, true),
-                _ => new Line
-                    (p, pen)
-            };
+
+            var fillShapes = !checkBox1.Checked;
+
+            if (SelectedTool == LineButton)
+                return new Line(p, pen);
+            if (SelectedTool == RectangleButton)
+                return new Instruments.Shapes.Rectangle
+                    (p, pen, brush, true, fillShapes);
+            if (SelectedTool == EllipseButton)
+                return new Elipse(p, pen, brush, true, fillShapes);
+            if (SelectedTool == LassoButton)
+                return new Selection(p);
+            return new Line(p, pen);
         }
 
         private bool CallSaveDialog()
         {
             if (saveFileDialog1.ShowDialog() != DialogResult.OK)
                 return false;
+
             filename = saveFileDialog1.FileName;
             SaveToFile();
             return true;
@@ -90,40 +88,67 @@ namespace MyPaint_OS_8_
 
         private bool CanResetGraphics()
         {
-            if (changed)
+            if (!changed)
+                return true;
+
+            var result = MessageBox.Show(
+                "There are unsaved changed. Do you want to save them?",
+                "Warning",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Cancel)
+                return false;
+
+            if (result == DialogResult.No)
             {
-                var result = MessageBox.Show(
-                    "There are unsaved changed. Do you want to save them?",
-                    "Warning",
-                    MessageBoxButtons.YesNoCancel,
-                    MessageBoxIcon.Warning);
-
-                if (result == DialogResult.Cancel)
-                    return false;
-
-                if (result == DialogResult.No)
-                {
-                    changed = false;
-                    return true;
-                }
-
-                if (filename != string.Empty)
-                    SaveToFile();
-
-                else if (filename == string.Empty)
-                    return CallSaveDialog();
+                changed = false;
+                return true;
             }
-            return true;
+
+            if (filename != string.Empty)
+                SaveToFile();
+
+            return CallSaveDialog();
         }
 
         private void AddShape()
         {
             changed = true;
             shapes.Add(shape);
-            Refresh();
             undoBuffer.Clear();
+            if (shape is Selection)
+                MyPaint();
             shape = null;
+            changeEnabledState();
         }
+
+        private void ActivateButton(Button b)
+        {
+            if (b == SelectedTool)
+                return;
+
+            SelectedTool.BackColor = def;
+            b.BackColor = selected;
+            SelectedTool = b;
+        }
+        private void changeEnabledState()
+        {
+            undoToolStripMenuItem.Enabled = shapes.Count == 0? false : true;
+            redoToolStripMenuItem.Enabled = undoBuffer.Count == 0 ? false : true;
+        }
+
+        private void MyPaint()
+        {
+            var img = new Bitmap(original);
+            using var graphics = Graphics.FromImage(img);
+            foreach (var shape in shapes)
+                shape.Paint(graphics);
+            pictureBox.Image.Dispose();
+            pictureBox.Image = img;
+            pictureBox.Refresh();
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             base.OnFormClosing(e);

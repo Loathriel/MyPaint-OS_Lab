@@ -3,7 +3,7 @@
     abstract class Shape
     {
         protected bool completed = false;
-        protected Point Start, End;
+        public Point Start, End;
         protected Brush brush;
         protected Pen pen;
         protected bool DrawOutline, DrawSolid;

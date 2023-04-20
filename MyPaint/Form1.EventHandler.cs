@@ -156,7 +156,12 @@ namespace MyPaint_OS_8_
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotImplemented();
+            if (shape is Selection selection)
+                selection.ForceComplete();
+            if (shape != null)
+                AddShape();
+            shape = new Selection(new Point(0, 0), new Point(pictureBox.Width, pictureBox.Height));
+            ((Selection)shape).SetImage((Bitmap)pictureBox.Image);
         }
 
         private void pasteFromFileToolStripMenuItem_Click(object sender, EventArgs e)

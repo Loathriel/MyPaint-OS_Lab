@@ -19,6 +19,14 @@
             this.brush = new SolidBrush(Color.White);
             this.hitbox = new System.Drawing.Rectangle();
         }
+        public Selection(Point start, Point end):
+            this(start)
+        {
+            this.End = end;
+            this.newEnd = end;
+            this.currentEnd = end;
+            FinishSelecting();
+        }
         private Selection(Selection copy)
         {
             this.image = copy.image;
@@ -35,6 +43,22 @@
         public void SetImage(Bitmap full)
         {
             image = new Bitmap(full);
+        }
+        private void FinishSelecting()
+        {
+            int startX = Math.Min(End.X, Start.X),
+                startY = Math.Min(End.Y, Start.Y),
+                endX = Math.Max(End.X, Start.X),
+                endY = Math.Max(End.Y, Start.Y);
+
+            currentStart = newStart = Start = new Point(startX, startY);
+            currentEnd = newEnd = End = new Point(endX, endY);
+
+            hitbox.Location = Start;
+            hitbox.Width = endX - startX;
+            hitbox.Height = endY - startY;
+
+            finishedSelecting = true;
         }
         public override void MouseDown(MouseEventArgs args, Graphics graphics)
         {
@@ -80,19 +104,7 @@
 
             newEnd = End = args.Location;
 
-            int startX = Math.Min(End.X, Start.X),
-                startY = Math.Min(End.Y, Start.Y),
-                endX = Math.Max(End.X, Start.X),
-                endY = Math.Max(End.Y, Start.Y);
-
-            currentStart = newStart = Start = new Point(startX, startY);
-            currentEnd = newEnd = End = new Point(endX, endY);
-
-            hitbox.Location = Start;
-            hitbox.Width = endX - startX;
-            hitbox.Height = endY - startY;
-
-            finishedSelecting = true;
+            FinishSelecting();
             image = image.Clone(hitbox, image.PixelFormat);
         }
 

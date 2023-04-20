@@ -139,13 +139,17 @@ namespace MyPaint_OS_8_
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (shape is Selection)
-                copyBuffer = shape;
+            if (shape is Selection selection)
+                copyBuffer = selection;
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NotImplemented();
+            if (shape != null)
+                AddShape();
+            shape = copyBuffer?.Copy();
+            using var graphics = pictureBox.CreateGraphics();
+            shape?.Paint(graphics);
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)

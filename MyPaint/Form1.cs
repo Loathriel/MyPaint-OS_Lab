@@ -5,9 +5,8 @@ namespace MyPaint_OS_8_
 {
     public partial class Form1 : Form
     {
-        private Shape? 
-            shape = null,
-            copyBuffer = null;
+        private Shape? shape = null;
+        private Selection? copyBuffer = null;
         List<Shape> shapes = new List<Shape>();
         List<Shape> undoBuffer = new List<Shape>();
         string filename = string.Empty;

@@ -5,7 +5,7 @@
         Bitmap image;
         Point startedFrom, newStart, newEnd, currentStart, currentEnd;
         System.Drawing.Rectangle hitbox;
-        bool finishedSelecting = false;
+        bool finishedSelecting = false, fillWithWhite = true;
         public Selection(Point start)
         {
             this.Start = start;
@@ -18,6 +18,18 @@
             this.pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
             this.brush = new SolidBrush(Color.White);
             this.hitbox = new System.Drawing.Rectangle();
+        }
+        private Selection(Selection copy)
+        {
+            this.image = copy.image;
+            this.hitbox = copy.hitbox;
+            this.Start = this.currentStart = this.newStart = new Point(0, 0);
+            this.hitbox.Location = this.Start;
+            this.End = this.currentEnd = this.newEnd = new Point(image.Width, image.Height);
+            this.pen = copy.pen;
+            this.fillWithWhite = false;
+            this.finishedSelecting = true;
+            this.completed = false;
         }
         public bool IsSelected => finishedSelecting;
         public void SetImage(Bitmap full)
@@ -95,7 +107,8 @@
 
             if (finishedSelecting)
             {
-                graphics.FillRectangle(brush, startX, startY, width, height);
+                if (fillWithWhite)
+                    graphics.FillRectangle(brush, startX, startY, width, height);
                 graphics.DrawImage(image, hitbox);
             }
 
@@ -104,6 +117,9 @@
             else if (!IsCompleted)
                 graphics.DrawRectangle(pen, newStartX, newStartY, width, height);
         }
+
+        public Selection Copy()
+            => new Selection(this);
 
     }
 }

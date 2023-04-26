@@ -1,9 +1,11 @@
-﻿namespace MyPaint_OS_8_.Instruments.Shapes
+﻿using System.Drawing;
+
+namespace MyPaint_OS_8_.Instruments.Shapes
 {
     internal class Selection: Shape
     {
         Bitmap image;
-        Point startedFrom, newStart, newEnd, currentStart, currentEnd;
+        Point startedFrom, newStart;
         System.Drawing.Rectangle hitbox;
         bool finishedSelecting = false, fillWithWhite = true;
         public Selection(Point start)
@@ -11,9 +13,6 @@
             this.Start = start;
             this.End = start;
             this.newStart = start;
-            this.newEnd = start;
-            this.currentStart = start;
-            this.currentEnd = start;
             this.pen = new Pen(Color.Black);
             this.pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
             this.brush = new SolidBrush(Color.White);
@@ -23,17 +22,15 @@
             this(start)
         {
             this.End = end;
-            this.newEnd = end;
-            this.currentEnd = end;
             FinishSelecting();
         }
         private Selection(Selection copy)
         {
             this.image = copy.image;
             this.hitbox = copy.hitbox;
-            this.Start = this.currentStart = this.newStart = new Point(0, 0);
+            this.Start = this.newStart = new Point(0, 0);
             this.hitbox.Location = this.Start;
-            this.End = this.currentEnd = this.newEnd = new Point(image.Width, image.Height);
+            this.End = new Point(image.Width, image.Height);
             this.pen = copy.pen;
             this.fillWithWhite = false;
             this.finishedSelecting = true;
@@ -51,8 +48,8 @@
                 endX = Math.Max(End.X, Start.X),
                 endY = Math.Max(End.Y, Start.Y);
 
-            currentStart = newStart = Start = new Point(startX, startY);
-            currentEnd = newEnd = End = new Point(endX, endY);
+            newStart = Start = new Point(startX, startY);
+            End = new Point(endX, endY);
 
             hitbox.Location = Start;
             hitbox.Width = endX - startX;
@@ -80,11 +77,8 @@
 
             if (finishedSelecting)
             {
-                currentStart.X = newStart.X - startedFrom.X + args.X;
-                currentStart.Y = newStart.Y - startedFrom.Y + args.Y;
-                currentEnd.X = newEnd.X - startedFrom.X + args.X;
-                currentEnd.Y = newEnd.Y - startedFrom.Y + args.Y;
-                hitbox.Location = currentStart;
+                hitbox.X = newStart.X - startedFrom.X + args.X;
+                hitbox.Y = newStart.Y - startedFrom.Y + args.Y;
             }
             else
                 End = args.Location;
@@ -96,13 +90,12 @@
 
             if (finishedSelecting)
             {
-                newStart = currentStart;
-                newEnd = currentEnd;
+                newStart = hitbox.Location;
                 this.Paint(graphics);
                 return;
             }
 
-            newEnd = End = args.Location;
+            End = args.Location;
 
             FinishSelecting();
             image = image.Clone(hitbox, image.PixelFormat);
@@ -112,8 +105,6 @@
         {
             int startX = Math.Min(Start.X, End.X),
                 startY = Math.Min(Start.Y, End.Y),
-                newStartX = Math.Min(currentStart.X, currentEnd.X),
-                newStartY = Math.Min(currentStart.Y, currentEnd.Y),
                 width = Math.Abs(Start.X - End.X),
                 height = Math.Abs(Start.Y - End.Y);
 
@@ -127,7 +118,7 @@
             if (!finishedSelecting)
                 graphics.DrawRectangle(pen, startX, startY, width, height);
             else if (!IsCompleted)
-                graphics.DrawRectangle(pen, newStartX, newStartY, width, height);
+                graphics.DrawRectangle(pen, hitbox.X, hitbox.Y, hitbox.Width, hitbox.Height);
         }
 
         public Selection Copy()
@@ -138,5 +129,19 @@
             completed = true;
         }
 
+        public void ClockwiseRotation(Graphics graphics)
+        {
+            Rotate(RotateFlipType.Rotate90FlipNone, graphics);
+        }
+        public void AntiClockwiseRotation(Graphics graphics)
+        {
+            Rotate(RotateFlipType.Rotate90FlipXY, graphics);
+        }
+        private void Rotate(RotateFlipType rotation, Graphics graphics)
+        {
+            image.RotateFlip(rotation);
+            (hitbox.Width, hitbox.Height) = (hitbox.Height, hitbox.Width);
+            Paint(graphics);
+        }
     }
 }

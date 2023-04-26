@@ -1,7 +1,11 @@
-﻿using MyPaint_OS_8_.Instruments.Shapes;
+﻿using AForge.Imaging.Filters;
+using MyPaint_OS_8_.Instruments.Shapes;
 
 namespace MyPaint_OS_8_
 {
+    #region Dummy
+    class DummyClass { }
+    #endregion
     partial class Form1
     {
         private void Graphics_Paint(object sender, PaintEventArgs e)
@@ -218,6 +222,65 @@ namespace MyPaint_OS_8_
         private void LassoButton_Click(object sender, EventArgs e)
         {
             ActivateButton((Button)sender);
+        }
+
+        private void RotateClockwiseButton_Click(object sender, EventArgs e)
+        {
+            if (shape is Selection selection)
+            {
+                pictureBox.Refresh();
+                using var graphics = pictureBox.CreateGraphics();
+                selection.ClockwiseRotation(graphics);
+                return;
+            }
+            var img = pictureBox.Image;
+            img.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            pictureBox.Image = img;
+            changed = true;
+        }
+
+        private void RotateAntiClockwiseButton_Click(object sender, EventArgs e)
+        {
+            if (shape is Selection selection)
+            {
+                pictureBox.Refresh();
+                using var graphics = pictureBox.CreateGraphics();
+                selection.AntiClockwiseRotation(graphics);
+                return;
+            }
+            var img = pictureBox.Image;
+            img.RotateFlip(RotateFlipType.Rotate90FlipXY);
+            pictureBox.Image = img;
+            changed = true;
+        }
+
+        private void inversionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using var newImg = ((Bitmap)pictureBox.Image).Clone(
+                new RectangleF(0, 0, pictureBox.Image.Width, pictureBox.Image.Height), 
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var img = new Invert().Apply(newImg);
+            pictureBox.Image.Dispose();
+            pictureBox.Image = img;
+        }
+
+        private void edgeDetectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new Edges().ApplyInPlace((Bitmap)pictureBox.Image);
+            pictureBox.Refresh();
+        }
+
+        private void grayscaleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var img = new Grayscale(0.2125, 0.7154, 0.0721).Apply((Bitmap)pictureBox.Image);
+            pictureBox.Image.Dispose();
+            pictureBox.Image = img;
+        }
+
+        private void oilFilterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new OilPainting().ApplyInPlace((Bitmap)pictureBox.Image);
+            pictureBox.Refresh();
         }
     }
 }

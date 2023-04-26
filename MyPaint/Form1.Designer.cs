@@ -53,18 +53,15 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.pasteFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inversionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.edgeDetectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grayscaleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.RotateAntiClockwiseButton = new System.Windows.Forms.Button();
+            this.RotateClockwiseButton = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -78,6 +75,7 @@
             this.EllipseButton = new System.Windows.Forms.Button();
             this.RectangleButton = new System.Windows.Forms.Button();
             this.LineButton = new System.Windows.Forms.Button();
+            this.oilFilterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.GraphicsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -118,8 +116,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -300,64 +297,34 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customizeToolStripMenuItem,
-            this.optionsToolStripMenuItem});
+            this.inversionToolStripMenuItem,
+            this.edgeDetectionToolStripMenuItem,
+            this.grayscaleToolStripMenuItem,
+            this.oilFilterToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
-            // customizeToolStripMenuItem
+            // inversionToolStripMenuItem
             // 
-            this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.customizeToolStripMenuItem.Text = "&Customize";
+            this.inversionToolStripMenuItem.Name = "inversionToolStripMenuItem";
+            this.inversionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.inversionToolStripMenuItem.Text = "Inversion";
+            this.inversionToolStripMenuItem.Click += new System.EventHandler(this.inversionToolStripMenuItem_Click);
             // 
-            // optionsToolStripMenuItem
+            // edgeDetectionToolStripMenuItem
             // 
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
-            this.optionsToolStripMenuItem.Text = "&Options";
+            this.edgeDetectionToolStripMenuItem.Name = "edgeDetectionToolStripMenuItem";
+            this.edgeDetectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.edgeDetectionToolStripMenuItem.Text = "Edge Detection";
+            this.edgeDetectionToolStripMenuItem.Click += new System.EventHandler(this.edgeDetectionToolStripMenuItem_Click);
             // 
-            // helpToolStripMenuItem
+            // grayscaleToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.contentsToolStripMenuItem,
-            this.indexToolStripMenuItem,
-            this.searchToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "&Help";
-            // 
-            // contentsToolStripMenuItem
-            // 
-            this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.contentsToolStripMenuItem.Text = "&Contents";
-            // 
-            // indexToolStripMenuItem
-            // 
-            this.indexToolStripMenuItem.Name = "indexToolStripMenuItem";
-            this.indexToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.indexToolStripMenuItem.Text = "&Index";
-            // 
-            // searchToolStripMenuItem
-            // 
-            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.searchToolStripMenuItem.Text = "&Search";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(119, 6);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
-            this.aboutToolStripMenuItem.Text = "&About...";
+            this.grayscaleToolStripMenuItem.Name = "grayscaleToolStripMenuItem";
+            this.grayscaleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.grayscaleToolStripMenuItem.Text = "Grayscale";
+            this.grayscaleToolStripMenuItem.Click += new System.EventHandler(this.grayscaleToolStripMenuItem_Click);
             // 
             // saveFileDialog1
             // 
@@ -372,6 +339,8 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.RotateAntiClockwiseButton);
+            this.panel1.Controls.Add(this.RotateClockwiseButton);
             this.panel1.Controls.Add(this.checkBox1);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
@@ -390,6 +359,30 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(65, 426);
             this.panel1.TabIndex = 1;
+            // 
+            // RotateAntiClockwiseButton
+            // 
+            this.RotateAntiClockwiseButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.RotateAntiClockwiseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RotateAntiClockwiseButton.Image = global::MyPaint_OS_8_.Properties.Resources.rotate;
+            this.RotateAntiClockwiseButton.Location = new System.Drawing.Point(33, 181);
+            this.RotateAntiClockwiseButton.Name = "RotateAntiClockwiseButton";
+            this.RotateAntiClockwiseButton.Size = new System.Drawing.Size(25, 25);
+            this.RotateAntiClockwiseButton.TabIndex = 14;
+            this.RotateAntiClockwiseButton.UseVisualStyleBackColor = false;
+            this.RotateAntiClockwiseButton.Click += new System.EventHandler(this.RotateAntiClockwiseButton_Click);
+            // 
+            // RotateClockwiseButton
+            // 
+            this.RotateClockwiseButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.RotateClockwiseButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.RotateClockwiseButton.Image = global::MyPaint_OS_8_.Properties.Resources.rotate_clockwise;
+            this.RotateClockwiseButton.Location = new System.Drawing.Point(3, 181);
+            this.RotateClockwiseButton.Name = "RotateClockwiseButton";
+            this.RotateClockwiseButton.Size = new System.Drawing.Size(25, 25);
+            this.RotateClockwiseButton.TabIndex = 13;
+            this.RotateClockwiseButton.UseVisualStyleBackColor = false;
+            this.RotateClockwiseButton.Click += new System.EventHandler(this.RotateClockwiseButton_Click);
             // 
             // checkBox1
             // 
@@ -425,7 +418,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label2.Location = new System.Drawing.Point(5, 110);
+            this.label2.Location = new System.Drawing.Point(5, 99);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 38);
             this.label2.TabIndex = 9;
@@ -453,7 +446,7 @@
             // 
             // LineWidth
             // 
-            this.LineWidth.Location = new System.Drawing.Point(3, 151);
+            this.LineWidth.Location = new System.Drawing.Point(3, 140);
             this.LineWidth.Maximum = new decimal(new int[] {
             15,
             0,
@@ -543,6 +536,13 @@
             this.LineButton.UseVisualStyleBackColor = false;
             this.LineButton.Click += new System.EventHandler(this.LineButton_Click);
             // 
+            // oilFilterToolStripMenuItem
+            // 
+            this.oilFilterToolStripMenuItem.Name = "oilFilterToolStripMenuItem";
+            this.oilFilterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.oilFilterToolStripMenuItem.Text = "Oil Filter";
+            this.oilFilterToolStripMenuItem.Click += new System.EventHandler(this.oilFilterToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -591,14 +591,6 @@
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripMenuItem selectAllToolStripMenuItem;
         private ToolStripMenuItem toolsToolStripMenuItem;
-        private ToolStripMenuItem customizeToolStripMenuItem;
-        private ToolStripMenuItem optionsToolStripMenuItem;
-        private ToolStripMenuItem helpToolStripMenuItem;
-        private ToolStripMenuItem contentsToolStripMenuItem;
-        private ToolStripMenuItem indexToolStripMenuItem;
-        private ToolStripMenuItem searchToolStripMenuItem;
-        private ToolStripSeparator toolStripSeparator5;
-        private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem deleteSelectedToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem pasteFromFileToolStripMenuItem;
@@ -621,5 +613,11 @@
         private Panel GraphicsPanel;
         private PictureBox pictureBox;
         private CheckBox checkBox1;
+        private Button RotateAntiClockwiseButton;
+        private Button RotateClockwiseButton;
+        private ToolStripMenuItem inversionToolStripMenuItem;
+        private ToolStripMenuItem edgeDetectionToolStripMenuItem;
+        private ToolStripMenuItem grayscaleToolStripMenuItem;
+        private ToolStripMenuItem oilFilterToolStripMenuItem;
     }
 }
